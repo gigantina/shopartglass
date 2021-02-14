@@ -1,0 +1,12 @@
+* {
+    background-color: red;
+}
+header {
+    horiz-align: right;
+    background-color: #e6002e;
+    margin-bottom; 30px;
+}
+
+#content {
+margin-top: 60px;
+}
