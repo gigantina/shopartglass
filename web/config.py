@@ -1,3 +1,5 @@
+import os
+
 def config():
     config_dict = {}
 
@@ -11,6 +13,7 @@ def config():
     config_dict['MAIL_DEFAULT_SENDER'] = 'youmail@gmail.com'
     config_dict['MAIL_PASSWORD'] = 'password'
     config_dict['SUM'] = 0
+    config_dict['APP_DIR'] = os.path.abspath(os.path.dirname(__file__))
 
 
     return config_dict

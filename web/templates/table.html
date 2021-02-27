@@ -31,9 +31,13 @@
     <tbody>
     {% for item in data %}
     <tr>
-        {% for value in item%}
-        <td>{{value}}</td>
-        {% endfor %}
+    {% for value in item %}
+        {% if loop.index0 < 6%}
+        <td>{{ value }}</td>
+        {% else %}
+        <td><img src="/static/img/{{ value }}" width="100px" alt=""></td>
+        {% endif %}
+    {% endfor %}
     </tr>
     {% endfor %}
     </tbody>

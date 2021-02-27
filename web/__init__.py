@@ -15,7 +15,8 @@ config_dict = config()
 for key in config_dict:
     app.config[key] = config_dict[key]
 
-app.config['UPLOAD_DIR'] = 'C:/Users/prosd/shopartglass/web/static/img'
+app.config['STATIC_DIR'] = os.path.join(app.config['APP_DIR'], 'static')
+app.config['UPLOAD_DIR'] = os.path.join(app.config['STATIC_DIR'], 'img')
 
 db = SQLAlchemy(app)
 
@@ -193,4 +194,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.60', port=8000)
+    host = '192.168.0.10'
+    app.run(host=host, port=8000)
