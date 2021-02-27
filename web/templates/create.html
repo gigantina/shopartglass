@@ -1,16 +1,29 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="container">
+        {% for field in form if field.name != 'csrf_token' %}
+            {{ field.label() }}
+            <br>
+            {{ field() }}
+            <br>
+            <br>
+        {% endfor %}
+    </div>
+</form>
+{{ message }}
 
-{% block title %}
-<title>Добавление товара</title>
-{% endblock %}
 
-{% block body %}
-<div class="container">
-    <h1>Добавление товара</h1>
-    <form method="post">
-        <input type="text" class="form-control" name="title" id="title" placeholder="Введите название"><br>
-        <input type="number" class="form-control" name="price" id="price" placeholder="Введите цену"><br>
-        <button class="btn btn-success" type="submit">Добавить товар</button>
-    </form>
-</div>
-{% endblock %}
+    {% if mode == 0 %}
+    <p><a href="{{ url_for('listitems') }}">Назад</a></p>
+    {% else %}
+    <p><a href="{{ url_for('listcategories', id=last_id) }}">Назад</a></p>
+    {% endif %}
+</body>
+</html>

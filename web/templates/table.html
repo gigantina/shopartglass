@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+   table {
+    width: 300px; /* Ширина таблицы */
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+   }
+   td, th {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 1px solid black; /* Параметры рамки */
+   }
+   th {
+    background-color: #b0e0e6; /* Цвет фона */
+   }
+
+    </style>
+</head>
+<body>
+
+    {% if mode == 0 %}
+    <p><a href="{{ url_for('edititem', id=last_id) }}">Новый товар</a></p>
+    {% else %}
+    <p><a href="{{ url_for('editcategory', id=last_id) }}">Новая категория</a></p>
+    {% endif %}
+
+
+<table>
+    <tbody>
+    {% for item in data %}
+    <tr>
+        {% for value in item%}
+        <td>{{value}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><a href="{{ url_for('admin') }}">Назад</a></p>
+</body>
+</html>
