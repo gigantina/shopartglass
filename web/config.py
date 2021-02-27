@@ -10,6 +10,7 @@ def config():
     config_dict['MAIL_USERNAME'] = 'youmail@gmail.com'
     config_dict['MAIL_DEFAULT_SENDER'] = 'youmail@gmail.com'
     config_dict['MAIL_PASSWORD'] = 'password'
+    config_dict['SUM'] = 0
 
 
     return config_dict

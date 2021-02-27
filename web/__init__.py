@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from forms import *
+from utlis import *
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 import os
@@ -20,6 +21,7 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+cost = 0
 
 
 @login_manager.user_loader
@@ -33,7 +35,7 @@ from models import *
 @app.route('/')
 def index():
     items = Item.query.order_by(Item.price).all()
-    return render_template('index.html', data=items)
+    return render_template('index.html', data=items, cost=cost2cart(app.config['SUM']))
 
 
 @app.route('/about')
@@ -43,7 +45,9 @@ def about():
 
 @app.route('/buy/<int:id>')
 def item_buy(id):
-    item = Item.query.get(id)
+    app.config['SUM'] += 230
+    cart = cost2cart(app.config['SUM'])
+    return redirect(url_for('index'))
 
 
 @app.route('/admin/', methods=['POST', 'GET'])
@@ -189,4 +193,4 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='192.168.0.60', port=8000)
