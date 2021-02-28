@@ -23,10 +23,11 @@ class ItemForm(FlaskForm):
     price = IntegerField('Цена')
     is_active = BooleanField('В наличии')
     text = TextAreaField('Описание')
+    value = IntegerField('Количество товара')
 
-    submit = SubmitField()
+    submit = SubmitField('Сохранить')
 
 
 class CategoryForm(FlaskForm):
     name = StringField("Название")
-    submit = SubmitField()
+    submit = SubmitField('Сохранить')

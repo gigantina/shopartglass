@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+
+{% block body %}
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <div class="container">
@@ -12,18 +9,19 @@
             {{ field.label() }}
             <br>
             {{ field() }}
+            {% if 'image' in field.name %}
+            <img src="/static/img/{{ field.data }}" width="200px" alt="Перезагрузи страничку или перезалей фотку">
+            {% endif %}
             <br>
             <br>
         {% endfor %}
     </div>
 </form>
 {{ message }}
-
-
     {% if mode == 0 %}
     <p><a href="{{ url_for('listitems') }}">Назад</a></p>
     {% else %}
     <p><a href="{{ url_for('listcategories', id=last_id) }}">Назад</a></p>
     {% endif %}
-</body>
-</html>
+
+{% endblock %}

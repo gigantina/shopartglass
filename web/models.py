@@ -24,6 +24,7 @@ class Category(db.Model):
     def all(self):
         return [self.id, self.name]
 
+
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
@@ -33,17 +34,12 @@ class Item(db.Model):
     text = db.Column(db.Text, nullable=False)
     first_image = db.Column(db.String(200), nullable=False)
     second_image = db.Column(db.String(200), nullable=True)
-    images = db.relationship('Image', backref='item', lazy=True)
+    value = db.Column(db.Integer, nullable=False)
+
 
     def __repr__(self):
         return self.title
 
     def all(self):
-        return [self.id, self.category_id, self.title, self.price, self.isActive, self.text, self.first_image,
-         self.second_image]
-
-
-class Image(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    path = db.Column(db.String, nullable=False)
-    item_id = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+        return [self.id, self.category_id, self.title, self.price, self.isActive, self.value, self.text, self.first_image,
+                self.second_image]

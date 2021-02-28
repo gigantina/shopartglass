@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+
+    <!--Section: Block Content-->
+    <section class="my-5">
+
+        <div class="row">
+            <div class="col-md-5 mb-4 mb-md-0">
+
+                <div class="view zoom z-depth-2 rounded">
+                    <img class="img-fluid w-100" src="/static/img/{{ item.first_image }}"
+                         alt="">
+                    <a href="#!">
+                        <div class="mask"></div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-md-7">
+
+                <h5>{{ item.title }}</h5>
+                <p><span class="mr-1"><strong>${{ item.price }}</strong></span></p>
+                <p class="pt-1">{{ item.text }}</p>
+                <hr>
+                <div class="table-responsive mb-2">
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                        <tr>
+                            <td class="pl-0 pb-0 w-25">Количество</td>
+                        </tr>
+                        <tr>
+                            <td class="pl-0">
+                                <div class="def-number-input number-input safari_only mb-0">
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"><i
+                                            class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <input class="quantity" min="1" max="{{ item.value }}" name="quantity" value="1"
+                                           type="number">
+                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"><i
+                                            class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form action="{{ url_for('additem', id=item.id) }}">
+                    <button type="submit" class="btn btn-primary btn-md mr-1 mb-2"><i
+                            class="fa fa-shopping-cart pr-2"></i>Add to cart
+                    </button>
+                    <br>
+                    Поделитесь товаром в социальных сетях:
+
+                    <div class="ya-share2" style="padding-top: 15px" data-size="l" data-curtain data-shape="round"
+                         data-services="vkontakte,facebook,odnoklassniki,telegram,viber,whatsapp"></div>
+                </form>
+                <hr>
+                <a href="#">Политика конфидециальности</a>
+            </div>
+        </div>
+
+    </section>
+</div>
+{% endblock %}

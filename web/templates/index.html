@@ -6,8 +6,51 @@
 
 {% block body %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Pricing</h1>
-    <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example.
-        It’s built with default Bootstrap components and utilities with little customization.</p>
+    <h1 class="display-4">Shopartglass</h1>
+    <p class="lead">Добро пожаловать в наш магазин!</p>
 </div>
-{% endblock %}
+
+
+<div class="container content">
+    <div class="row" style="background-color: white; padding: 3px; padding-top: 25px;">
+        <div class="col-md-4">
+            <div class="list-group text-center">
+                <a href="{{ url_for('index') }}"
+                   class="text-decoration-none all_cat list-group-item">Все товары</a>
+                {% for category in categories %}
+                <a href="{{ url_for('index', category=category.id) }}" class="text-decoration-none cat list-group-item">{{
+                    category }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-8 products">
+            {% for item in items %}
+            {% if loop.index0 % 3 == 0 %}
+            {% set iter = loop %}
+            <div class="row">
+                {% for i in range(3) %}
+                {% if iter.index0+i < items|length %}
+                <div class="col-sm-4">
+                    <div class="product">
+                        <div class="product-img center-block">
+                            <a href="#"><img src="/static/img/{{ items[iter.index0+i].first_image }}" width="150px"
+                                             height="150px"
+                                             alt=""></a>
+                        </div>
+                        <p class="product-title">
+                            <a href="#">{{ items[iter.index0+i].title }}</a>
+                        </p>
+                        <p class="product-desc">{{ items[iter.index0+i].text }}</p>
+                        <p class="product-price">{{ items[iter.index0+i].price }}₽</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    {% endblock %}
