@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
-from utlis import *
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 import os
@@ -20,7 +19,6 @@ app.config['UPLOAD_DIR'] = os.path.join(app.config['STATIC_DIR'], 'img')
 
 db = SQLAlchemy(app)
 
-
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 cost = 0
@@ -34,7 +32,6 @@ def load_user(user_id):
 from forms import *
 from models import *
 
-
 @app.route('/', methods=['GET'])
 def index():
     categories = Category.query.all()
@@ -45,27 +42,29 @@ def index():
             items = Item.query.filter_by(category_id=category).all()
         else:
             items = Item.query.all()
-    print(items)
-
-    return render_template('index.html', cost=cost2cart(app.config['SUM']), categories=categories, items=items)
+    return render_template('index.html', cost=cost2cart(sum_cart()), categories=categories, items=items)
 
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+@app.route('/cart')
+def cart():
+    cart_ = from_cart_to_list()
+    sum_ = sum([item.price * amount for item, amount in cart_])
+    return render_template('cart.html', items=cart_, sum_=sum_, cost=cost2cart(sum_cart()))
 
-@app.route('/item/<int:id>')
+
+@app.route('/item/<int:id>', methods=['GET', 'POST'])
 def product(id):
+    if request.method == 'POST':
+        amount = request.form.get('amount')
+        if amount:
+            additemtocart(id, int(amount))
+            checkcart()
     item = Item.query.get(id)
-    return render_template('product.html', item=item, cost=cost2cart(app.config['SUM']))
-
-
-@app.route('/buy/<int:id>')
-def additem(id):
-    item = Item.query.get(id)
-    app.config['SUM'] += item.price
-    return redirect(url_for('product', id=item.id))
+    return render_template('product.html', item=item, cost=cost2cart(sum_cart()))
 
 
 @app.route('/admin/', methods=['POST', 'GET'])
@@ -241,4 +240,4 @@ def logout():
 
 if __name__ == '__main__':
     host = '192.168.0.60'
-    app.run(host=host, port=8000)
+    app.run(host=host, port=8000, debug=True)

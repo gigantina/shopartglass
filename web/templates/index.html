@@ -5,13 +5,13 @@
 {% endblock %}
 
 {% block body %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center anim-show-fast">
     <h1 class="display-4">Shopartglass</h1>
     <p class="lead">Добро пожаловать в наш магазин!</p>
 </div>
 
 
-<div class="container content">
+<div class="container content anim-show-slow">
     <div class="row" style="background-color: white; padding: 3px; padding-top: 25px;">
         <div class="col-md-4">
             <div class="list-group text-center">
@@ -31,14 +31,14 @@
                 {% for i in range(3) %}
                 {% if iter.index0+i < items|length %}
                 <div class="col-sm-4">
-                    <div class="product">
+                    <div class="product product-index">
                         <div class="product-img center-block">
-                            <a href="#"><img src="/static/img/{{ items[iter.index0+i].first_image }}" width="150px"
+                            <a href="{{ url_for('product', id=items[iter.index0+i].id) }}"><img src="/static/img/{{ items[iter.index0+i].first_image }}" width="150px"
                                              height="150px"
                                              alt=""></a>
                         </div>
                         <p class="product-title">
-                            <a href="#">{{ items[iter.index0+i].title }}</a>
+                            <a href="{{ url_for('product', id=items[iter.index0+i].id) }}">{{ items[iter.index0+i].title }}</a>
                         </p>
                         <p class="product-desc">{{ items[iter.index0+i].text }}</p>
                         <p class="product-price">{{ items[iter.index0+i].price }}₽</p>

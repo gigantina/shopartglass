@@ -27,12 +27,11 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link active text-white">Главная</a>
-                <a href="#" class="nav-item nav-link text-white">Магазин</a>
-                <a href="#" class="nav-item nav-link text-white">О нас</a>
+                <a href="{{ url_for('index') }}" class="nav-item nav-link active text-white">Главная</a>
+                <a href="{{ url_for('about') }}" class="nav-item nav-link text-white">О нас</a>
             </div>
             <div class="navbar-nav ml-auto">
-                <a href="#" class="nav-item nav-link text-white"><i class="fa fa-shopping-cart" style="font-size: 24px" aria-hidden="true"></i>{{ cost }}</a>
+                <a href="{{ url_for('cart') }}" class="nav-item nav-link text-white"><i class="fa fa-shopping-cart" style="font-size: 24px" aria-hidden="true"></i>{{ cost }}</a>
             </div>
         </div>
     </nav>

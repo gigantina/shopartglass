@@ -1,9 +1,3 @@
-def cost2cart(cost):
-    if cost != 0:
-        return f'  {cost}р'
-    else:
-        return ''
+from flask import session
+from models import Item
 
-
-def cart2cost(cart):
-    return int(cart[:-1].lstrip())

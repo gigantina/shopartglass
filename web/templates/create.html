@@ -8,9 +8,11 @@
         {% for field in form if field.name != 'csrf_token' %}
             {{ field.label() }}
             <br>
-            {{ field() }}
             {% if 'image' in field.name %}
+            {{ field(class_='form-control-file') }}
             <img src="/static/img/{{ field.data }}" width="200px" alt="Перезагрузи страничку или перезалей фотку">
+            {% else %}
+            {{ field(class_='form-control') }}
             {% endif %}
             <br>
             <br>

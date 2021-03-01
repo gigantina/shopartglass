@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block body %}
+<!--Section: Block Content-->
+<section class="shopping-cart dark">
+    <div class="container">
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Корзина</h1>
+            <p class="lead">Здесь все товары, которые вы выбрали</p>
+        </div>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="items">
+                        {% for item, amount in items %}
+                        <div class="product-cart product">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a href="{{ url_for('product', id=item.id) }}"><img
+                                            src="/static/img/{{ item.first_image }}" width="200px" height="200px"></a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-md-5 product-name">
+                                                <div class="product-name">
+                                                    <a href="{{ url_for('product', id=item.id) }}">{{ item.title }}</a>
+                                                    <div class="product-info">
+                                                        <label for="quantity">Количество: {{ amount }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 price">
+                                                <span>{{ item.price }}₽</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <div class="summary">
+                        <h3>Сумма</h3>
+                        <div class="summary-item"><span class="text">Всего:</span><span class="price" style="font-weight: 600">{{ sum_ }}₽</span>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-lg btn-block">К оформлению заказа</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

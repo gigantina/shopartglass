@@ -32,9 +32,9 @@
             {% for value in item %}
             {% if loop.index0 < 7 %}
             {% if mode == 0 %}
-            <td><a href="{{ url_for('edititem', id=item[0]) }}">{{ value }}</a></td>
+            <td><a style='color: #000' href="{{ url_for('edititem', id=item[0]) }}">{{ value }}</a></td>
             {% else %}
-            <td><a href="{{ url_for('editcategory', id=item[0]) }}">{{ value }}</a></td>
+            <td><a style='color: #000' href="{{ url_for('editcategory', id=item[0]) }}">{{ value }}</a></td>
             {% endif %}
             {% else %}
             <td><img src="/static/img/{{ value }}" width="100px" alt=""></td>
