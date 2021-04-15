@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, LoginManager, login_user, logout_user, current_user
 import os
+from order import *
 
 from config import config
 from werkzeug.utils import secure_filename
@@ -32,6 +33,7 @@ def load_user(user_id):
 from forms import *
 from models import *
 
+
 @app.route('/', methods=['GET'])
 def index():
     categories = Category.query.all()
@@ -49,11 +51,40 @@ def index():
 def about():
     return render_template('about.html')
 
+
+@app.route('/order', methods=['POST', 'GET'])
+def order():
+    form = CheckoutForm()
+    order = dict()
+    message = ''
+    if form.validate_on_submit():
+        order['email'] = form.email
+        order['name'] = form.name
+        order['phone'] = form.phone
+        _cart = from_cart_to_list()
+        order['products'] = _cart
+        send_telegram(from_order_to_text(order))
+        deletecart()
+        return redirect(url_for('success'))
+    else:
+        message = 'Неправильный формат данных!'
+    return render_template('order.html', form=form, message=message)
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
 @app.route('/cart')
 def cart():
     cart_ = from_cart_to_list()
     sum_ = sum([item.price * amount for item, amount in cart_])
     return render_template('cart.html', items=cart_, sum_=sum_, cost=cost2cart(sum_cart()))
+
+
+@app.route('/cart/delete/<string:id>')
+def deleteitemfromcart(id):
+    id = int(id)
+    deletefromcart(id)
+    return redirect(url_for('cart'))
 
 
 @app.route('/item/<int:id>', methods=['GET', 'POST'])
@@ -63,8 +94,15 @@ def product(id):
         if amount:
             additemtocart(id, int(amount))
             checkcart()
+            return redirect(url_for('cart'))
     item = Item.query.get(id)
-    return render_template('product.html', item=item, cost=cost2cart(sum_cart()))
+
+    if item.second_image:
+        images = f'{item.first_image}, {item.second_image}'
+    else:
+        images = item.first_image
+
+    return render_template('product.html', item=item, images=images, cost=cost2cart(sum_cart()))
 
 
 @app.route('/admin/', methods=['POST', 'GET'])
@@ -148,13 +186,36 @@ def edititem(id):
             if type(form.first_image.data) != type('string') and form.first_image.data:
                 item.first_image = form.first_image.data.filename
             if type(form.second_image.data) != type('string') and form.second_image.data:
-                item.second_image = form.second_image.data.filename
+                if item.second_image:
+                    item.second_image += f', {form.second_image.data.filename}'
+                else:
+                    item.second_image = form.second_image.data.filename
             try:
                 db.session.commit()
                 message = 'Изменения успешно сохранены!'
             except:
                 pass
-    return render_template('create.html', form=form, message=message, mode=0)
+    if item.second_image:
+        images = f'{item.first_image}, {item.second_image}'
+    else:
+        images = item.first_image
+
+    return render_template('create.html', form=form, message=message, mode=0, images=images, id=id)
+
+
+@app.route('/admin/item/<string:id>/delete/<string:photo>', methods=['POST', 'GET'])
+def deletephoto(id, photo):
+    id = int(id)
+    obj = [i.id for i in Item.query.all()]
+    item = Item.query.get(id)
+    text = item.second_image.split(', ')
+    text.remove(photo)
+    item.second_image = ', '.join(text)
+    try:
+        db.session.commit()
+    except:
+        pass
+    return redirect(url_for('edititem', id=id))
 
 
 @app.route('/admin/categories/', methods=['POST', 'GET'])
@@ -239,5 +300,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    host = '192.168.0.60'
+    host = 'localhost'
     app.run(host=host, port=8000, debug=True)

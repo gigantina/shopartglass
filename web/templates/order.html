@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+<!--Section: Block Content-->
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="container">
+        {% for field in form if field.name != 'csrf_token' %}
+            {% if 'submit' not in field.name %}
+            {{ field.label() }}*
+            {% endif %}
+            <br>
+            {{ field(class_='form-control') }}
+            <br>
+            <br>
+        {% endfor %}
+    </div>
+</form>
+{{ message }}
+<div class="container"><h3>Мы скоро вам перезвоним и уточним детали заказа!</h3></div>
+
+{% endblock %}

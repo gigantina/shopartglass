@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+{% for category, message in get_flashed_messages(with_categories=true) %}
+<spam class="{{ category }}">{{ message }}</spam>
+{% endfor %}
+<div class="form-group">
+    <form action="" method="post">
+        {{ form.csrf_token }}
+        <div class="container">
+            {{ form.username.label() }}
+            <br>
+            {{ form.username(class_='form-control') }}
+            <br>
+
+            {% if form.username.errors %}
+            {% for error in form.username.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+            <br>
+            {{ form.password.label() }}
+            <br>
+            {{ form.password(class_='form-control') }}
+            <br>
+            {% if form.password.errors %}
+            {% for error in form.password.errors %}
+            {{ error }}
+            {% endfor %}
+            {% endif %}
+            <br>
+            {{ form.submit() }}
+            <br>
+        </div>
+    </form>
+</div>
+    {% endblock %}

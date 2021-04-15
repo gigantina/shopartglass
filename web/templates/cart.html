@@ -7,6 +7,7 @@
             <h1 class="display-4">Корзина</h1>
             <p class="lead">Здесь все товары, которые вы выбрали</p>
         </div>
+        {% if items %}
         <div class="content">
             <div class="row">
                 <div class="col-md-12 col-lg-8">
@@ -31,6 +32,7 @@
                                             </div>
                                             <div class="col-md-4 price">
                                                 <span>{{ item.price }}₽</span>
+                                                <a href="{{ url_for('deleteitemfromcart', id=item.id) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -45,11 +47,14 @@
                         <h3>Сумма</h3>
                         <div class="summary-item"><span class="text">Всего:</span><span class="price" style="font-weight: 600">{{ sum_ }}₽</span>
                         </div>
-                        <button type="button" class="btn btn-primary btn-lg btn-block">К оформлению заказа</button>
+                        <form action="{{ url_for('order') }}">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">К оформлению заказа</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
 </section>
 {% endblock %}

@@ -10,7 +10,13 @@
             <br>
             {% if 'image' in field.name %}
             {{ field(class_='form-control-file') }}
-            <img src="/static/img/{{ field.data }}" width="200px" alt="Перезагрузи страничку или перезалей фотку">
+            {% if 'second' in field.name %}
+            <img src="/static/img/{{ images.split(', ')[0] }}" width="200px" alt="Перезагрузи страничку или перезалей фотку">
+                {% for img in images.split(', ')[1:] %}
+                <img src="/static/img/{{ img }}" width="200px" alt="Перезагрузи страничку или перезалей фотку">
+                <a href="{{ url_for('deletephoto', id=id, photo=img) }}">Удалить</a>
+                {% endfor %}
+            {% endif %}
             {% else %}
             {{ field(class_='form-control') }}
             {% endif %}
